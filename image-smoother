@@ -1,0 +1,27 @@
+const int dir[9][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+
+int** imageSmoother(int** img, int imgSize, int* imgColSize, int* returnSize, int** returnColumnSizes) {
+    
+    int **ret = malloc(sizeof(int*) * imgSize);
+    *returnSize = imgSize;
+    *returnColumnSizes = calloc(imgSize, sizeof(int));
+    
+    for (int r = 0; r < imgSize; r++){
+        ret[r] = calloc(imgColSize[0], sizeof(int));
+        for (int c = 0; c < imgColSize[0]; c++){
+            int count = 0, sum = 0;
+            for (int idx = 0; idx < 9; idx++){
+                int rr = r + dir[idx][0], cc = c + dir[idx][1];
+                if (rr >= 0 && rr < imgSize && cc >= 0 && cc < imgColSize[0]){
+                    count++;
+                    sum += img[rr][cc];
+                }
+            }
+            ret[r][c] = sum / count;
+        }
+        (*returnColumnSizes)[r] = imgColSize[0];
+    }
+
+    return ret;
+    
+}
